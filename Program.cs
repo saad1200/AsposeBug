@@ -35,12 +35,6 @@ namespace AsposeBug
                 var htmlLicense = new Aspose.Html.License();
                 htmlLicense.SetLicense(stream);
                 
-                using (FileStream file = new FileStream("/Users/savaris/Dev/sample.html", FileMode.Open, FileAccess.Read)) {
-                    byte[] bytes = new byte[file.Length];
-                    file.Read(bytes, 0, (int)file.Length);
-                    ms.Write(bytes, 0, (int)file.Length);
-                }
-                
                 var wrdf = new Aspose.Words.Document("/Users/savaris/Dev/sample.html");
                 wrdf.Save(Dir + "output.docx", Aspose.Words.SaveFormat.Docx);
                 wrdf.Save(Dir + "output.pdf", Aspose.Words.SaveFormat.Pdf);
