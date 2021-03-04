@@ -16,3 +16,5 @@ bld/
 msbuild.log
 msbuild.err
 msbuild.wrn
+.idea/
+.DS_Store
