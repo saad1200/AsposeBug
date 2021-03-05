@@ -27,7 +27,7 @@ namespace AsposeBug
                 Aspose.Words.Saving.PdfSaveOptions pdfSaveOptions = new Aspose.Words.Saving.PdfSaveOptions{
                     FontEmbeddingMode = Aspose.Words.Saving.PdfFontEmbeddingMode.EmbedAll
                 };
-                wrdf.Save(Dir + "output.pdf", pdfSaveOptions);
+                wrdf.Save(Dir + "output.pdf", SaveFormat.Pdf);
                 wrdf.Save(Dir + "output.jpeg", Aspose.Words.SaveFormat.Jpeg);
                 wrdf.Save(Dir + "output.html", Aspose.Words.SaveFormat.Html);
                 wrdf.Save(Dir + "output.docx", Aspose.Words.SaveFormat.Docx);
