@@ -11,15 +11,19 @@
         }
     </style>
     <style>
-        li {
-            list-style-image: url("bullet.svg");
+        ul {
+            list-style-type: none;
+        }
+        li:before {
+            content: '\2022';
+            padding-right: 10px;
         }
     </style>
 </head>
 
 <body>
     <ul>
-        <li>Unordered information.</li>
+        <li>B</li>
         <li>Ordered information. </li>
         <li>Navigation information. </li>
         <li>Definitions. </li>
