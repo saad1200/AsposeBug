@@ -1,4 +1,9 @@
+using System;
+using System.Collections;
 using System.IO;
+using Aspose.Words;
+using Aspose.Words.Fonts;
+using System.Linq;
 
 namespace AsposeBug
 {
@@ -9,16 +14,41 @@ namespace AsposeBug
             using (MemoryStream ms = new MemoryStream())
             {
                 ImportLicense();
-                var wrdf = new Aspose.Words.Document("./input.html");
-                string Dir = "./output/";
+                var callback = new FontSubstitutionWarningCollector();
+                var fontSettings = new FontSettings();
+                var loadOptions = new LoadOptions { FontSettings = fontSettings };
+                var wrdf = new Aspose.Words.Document("./input.html", loadOptions);
+                wrdf.FontSettings.SubstitutionSettings.FontConfigSubstitution.Enabled = false;
+                wrdf.WarningCallback = callback;
+                var Dir = "./output/";
                 if (Directory.Exists(Dir))
                     Directory.Delete(Dir, true);
 
-                wrdf.Save(Dir + "output.pdf", Aspose.Words.SaveFormat.Pdf);
+                Aspose.Words.Saving.PdfSaveOptions pdfSaveOptions = new Aspose.Words.Saving.PdfSaveOptions{
+                    FontEmbeddingMode = Aspose.Words.Saving.PdfFontEmbeddingMode.EmbedAll
+                };
+                wrdf.Save(Dir + "output.pdf", pdfSaveOptions);
                 wrdf.Save(Dir + "output.jpeg", Aspose.Words.SaveFormat.Jpeg);
                 wrdf.Save(Dir + "output.html", Aspose.Words.SaveFormat.Html);
                 wrdf.Save(Dir + "output.docx", Aspose.Words.SaveFormat.Docx);
+
+                if(callback.FontSubstitutionWarnings.Any())
+                    Console.WriteLine("Font warning exists");
             }
+        }
+ 
+        private class FontSubstitutionWarningCollector : IWarningCallback
+        {
+            /// <summary>
+            /// Called every time a warning occurs during loading/saving.
+            /// </summary>
+            public void Warning(WarningInfo info)
+            {
+                if (info.WarningType == WarningType.FontSubstitution)
+                    FontSubstitutionWarnings.Warning(info);
+            }
+
+            public WarningInfoCollection FontSubstitutionWarnings = new WarningInfoCollection();
         }
 
         public static void ImportLicense()
