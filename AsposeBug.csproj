@@ -12,4 +12,10 @@
     <PackageReference Include="Aspose.Words" Version="21.2.0" />
   </ItemGroup>
 
+  <!-- <ItemGroup>
+    <None Update="fonts/">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    </ItemGroup> -->
+
 </Project>

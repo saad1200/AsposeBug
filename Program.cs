@@ -4,6 +4,7 @@ using System.IO;
 using Aspose.Words;
 using Aspose.Words.Fonts;
 using System.Linq;
+using System.Reflection;
 
 namespace AsposeBug
 {
@@ -14,12 +15,17 @@ namespace AsposeBug
             using (MemoryStream ms = new MemoryStream())
             {
                 ImportLicense();
-                var callback = new FontSubstitutionWarningCollector();
+
+                var folderFontSource = new FolderFontSource("./fonts", true);                
                 var fontSettings = new FontSettings();
+                fontSettings.SetFontsSources(new FontSourceBase[]
+                {
+                    new SystemFontSource(),
+                    folderFontSource
+                });
+            
                 var loadOptions = new LoadOptions { FontSettings = fontSettings };
                 var wrdf = new Aspose.Words.Document("./input.html", loadOptions);
-                wrdf.FontSettings.SubstitutionSettings.FontConfigSubstitution.Enabled = false;
-                wrdf.WarningCallback = callback;
                 var Dir = "./output/";
                 if (Directory.Exists(Dir))
                     Directory.Delete(Dir, true);
@@ -31,9 +37,6 @@ namespace AsposeBug
                 wrdf.Save(Dir + "output.jpeg", Aspose.Words.SaveFormat.Jpeg);
                 wrdf.Save(Dir + "output.html", Aspose.Words.SaveFormat.Html);
                 wrdf.Save(Dir + "output.docx", Aspose.Words.SaveFormat.Docx);
-
-                if(callback.FontSubstitutionWarnings.Any())
-                    Console.WriteLine("Font warning exists");
             }
         }
  
